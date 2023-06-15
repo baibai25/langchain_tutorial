@@ -12,7 +12,7 @@ WORKDIR /app
 RUN apt update && \
     apt -y upgrade && \
     apt install --no-install-recommends -y \
-    git make curl wget tar \
+    git make curl wget tar direnv vim \
     build-essential libssl-dev libffi-dev
 
 # Python
@@ -27,14 +27,12 @@ RUN ln -sf /usr/bin/python3.11 /usr/local/bin/python3 && \
     ln -sf /usr/bin/python3.11 /usr/local/bin/python && \
     pip install --upgrade pip setuptools
 
-# poetry
-RUN curl -sSL https://install.python-poetry.org | python3 -
-COPY pyproject.toml /app
-# RUN poetry config virtualenvs.create false && \
-#     poetry install --no-root
-RUN poetry install --no-root
-
-# pytorch for CUDA 11.8
-# RUN poetry run python -m pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cu118
-
+# Install poetry
+# poetry installをDocker内でやると、volumeをマウントした際に消えるのでmakefileで実行
 COPY . /app
+RUN curl -sSL https://install.python-poetry.org | python3 -
+
+# Clean
+RUN apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
