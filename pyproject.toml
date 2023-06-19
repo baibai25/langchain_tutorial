@@ -16,6 +16,10 @@ ipykernel = "^6.23.2"
 sentencepiece = "^0.1.99"
 xformers = "^0.0.20"
 torch = "^2.0.1"
+datasets = "^2.13.0"
+sentence-transformers = "^2.2.2"
+chromadb = "^0.3.26"
+gpt4all = "^0.3.4"
 
 
 [tool.poetry.group.dev.dependencies]
